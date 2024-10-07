@@ -11,10 +11,10 @@ pipeline {
             }
             steps {
                 sh '''
-                npm --version
-                npm ci
-                npm run build
-                echo "Build is done"
+                    npm --version
+                    npm ci
+                    npm run build
+                    echo "Build is done"
                 '''
             }
         }
@@ -27,9 +27,8 @@ pipeline {
             }
             steps {
                 sh '''
-                test -f build/index.html
-                npm test
-                echo "Testing is done"
+                    test -f build/index.html
+                    npm test
                 '''
             }
         }    
