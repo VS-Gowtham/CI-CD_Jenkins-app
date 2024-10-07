@@ -32,5 +32,12 @@ pipeline {
                 echo "Testing is done"
                 '''
             }
-    }   }
+        }    
+    }
+
+    post {
+        always {
+            junit 'test-results/junit.xml'
+        }
+    }
 }
