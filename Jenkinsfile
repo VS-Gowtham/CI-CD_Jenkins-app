@@ -2,6 +2,13 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/VS-Gowtham/CI-CD_Jenkins-app.git',
+                    credentialsId: 'MY-GIT-Cred'
+            }
+        }
         stage('Build') {
             agent {
                 docker {
