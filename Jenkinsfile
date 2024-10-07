@@ -2,10 +2,35 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode True
+                }
+            }
             steps {
-                echo 'Hello World'
+                sh '''
+                npm --version
+                npm ci
+                npm run build
+                echo "Build is done"
+                '''
             }
         }
-    }
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode True
+                }
+            }
+            steps {
+                sh '''
+                test -f build/index.html
+                npm test
+                echo "Testing is done"
+                '''
+            }
+    }   }
 }
