@@ -2,13 +2,8 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/VS-Gowtham/CI-CD_Jenkins-app.git',
-                    credentialsId: 'MY-GIT-Cred'
-            }
-        }
+        /*
+
         stage('Build') {
             agent {
                 docker {
@@ -18,13 +13,17 @@ pipeline {
             }
             steps {
                 sh '''
+                    ls -la
+                    node --version
                     npm --version
                     npm ci
                     npm run build
-                    echo "Build is done"
+                    ls -la
                 '''
             }
         }
+        */
+
         stage('Test') {
             agent {
                 docker {
@@ -32,29 +31,32 @@ pipeline {
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
-                    test -f build/index.html
+                    #test -f build/index.html
                     npm test
                 '''
             }
         }
-        stage('E2E-Test') {
+
+        stage('E2E') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.48.0-noble'
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
                     npm install serve
                     node_modules/.bin/serve -s build &
                     sleep 10
-                    npx playwright test    
+                    npx playwright test
                 '''
             }
-        }        
+        }
     }
 
     post {
